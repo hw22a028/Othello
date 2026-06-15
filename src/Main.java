@@ -19,9 +19,38 @@ public class Main {
 		
 		for (int i = 0; i < 100; i++)
 		{
-			String inputStr = Normalizer.normalize(sc.next(), Normalizer.Form.NFKC);
+			if (service.JudgeFinish()) break;
+			
+			Player nowPlayer = service.GetNowPlayer();
+			System.out.println(nowPlayer + "の手番");
+			
 			ShowTable(table);
+			System.out.println();
+			
+			System.out.print("駒配置場所(縦横)：");
+			String inputStr = Normalizer.normalize(sc.next(), Normalizer.Form.NFKC);
+			System.out.println();
+			
+			if (inputStr.equals("PASS"))
+			{
+				service.PASS(nowPlayer);
+				System.out.println("PLAYER1" + service.GetPassData().getOrDefault(Player.Player1, 0) + " PLAYER2" + service.GetPassData().getOrDefault(Player.Player2, 0));
+				service.SwitchPlayer();
+				continue;
+			}
+			
+			if (service.InputCheck(inputStr))
+				{
+					System.out.println(inputStr);
+					service.SetPiece();
+				}
+			else System.out.println("error");
+			
+			service.SwitchPlayer();
 		}
+		System.out.println(service.GetWinner() + "の勝利!!");
+		
+		sc.close();
 	}
 	
 	//盤面表示---------------------------------------------------------------------------
