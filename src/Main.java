@@ -42,12 +42,15 @@ public class Main {
 			if (service.InputCheck(inputStr))
 				{
 					System.out.println(inputStr);
-					service.SetPiece();
+					if(service.SetPiece(service.ParseToVector2(inputStr)))
+					{
+						service.SwitchPlayer();
+					}
+					else System.out.println("無効な設置場所");
 				}
 			else System.out.println("error");
-			
-			service.SwitchPlayer();
 		}
+		ShowTable(table);
 		System.out.println(service.GetWinner() + "の勝利!!");
 		
 		sc.close();
@@ -64,15 +67,15 @@ public class Main {
 			{
 				switch (table[i][j]) {
 				case PieceState.White:
-					System.out.print("〇");
-					break;
-					
-				case PieceState.Black:
 					System.out.print("●");
 					break;
 					
+				case PieceState.Black:
+					System.out.print("○");
+					break;
+					
 				case PieceState.None:
-					System.out.print("--");
+					System.out.print("-");
 					break;
 					
 				default:
